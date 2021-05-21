@@ -1,0 +1,38 @@
+name: Build Baikal-Nginx Docker image
+on:
+  push:
+  schedule:
+    - cron: "0 0 * * *"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Build
+    steps:
+      - id: fetch_version
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          repository: sabre-io/Baikal
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Configure Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          build-args: RELEASE=${{ steps.fetch_version.outputs.release }}
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ghcr.io/thibaultnocchi/baikal_nginx:latest
+            ghcr.io/thibaultnocchi/baikal_nginx:${{ steps.fetch_version.outputs.release }}
