@@ -1,5 +1,6 @@
 name: Build Baikal-Nginx Docker image
 on:
+  workflow_dispatch:
   push:
   schedule:
     - cron: "0 0 * * *"
