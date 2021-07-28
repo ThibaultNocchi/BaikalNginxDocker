@@ -17,3 +17,14 @@ docker run \
 ```
 
 You can also mount `/app/config` and/or `/app/Specific/db` as volumes to provide and/or backup the config and SQLite database.
+
+To set the email server to send invites, you will have to set those environment variables:
+
+| Variable             | Description                        |
+| -------------------- | ---------------------------------- |
+| BAIKAL_SMTP_HOST     | SMTP host                          |
+| BAIKAL_SMTP_PORT     | SMTP port                          |
+| BAIKAL_SMTP_FROM     | Address that will appear as sender |
+| BAIKAL_SMTP_USER     | SMTP user                          |
+| BAIKAL_SMTP_PASS     | SMTP password                      |
+| BAIKAL_SMTP_STARTTLS | Enable STARTTLS (`on` or `off`)    |

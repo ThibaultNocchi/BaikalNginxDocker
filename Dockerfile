@@ -3,7 +3,7 @@ FROM php:7-fpm-alpine
 ARG RELEASE
 
 WORKDIR /
-RUN apk add --no-cache sqlite nginx supervisor
+RUN apk add --no-cache sqlite nginx supervisor msmtp
 
 # BAIKAL
 RUN wget https://github.com/sabre-io/Baikal/releases/download/$RELEASE/baikal-$RELEASE.zip -O baikal.zip && unzip baikal.zip && rm baikal.zip && mv baikal app
@@ -17,7 +17,7 @@ COPY ./nginx.conf /etc/nginx/http.d/default.conf
 RUN mkdir -p /run/nginx && chown -R nginx:nginx /run/nginx
 
 # START
-RUN echo "supervisord -c /etc/supervisor/conf.d/supervisord.conf" > start.sh && chmod +x start.sh
+COPY ./start.sh ./start.sh
 
 # DOCKER SETTINGS
 VOLUME [ "/app/config", "/app/Specific/db" ]
