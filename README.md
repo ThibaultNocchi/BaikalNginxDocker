@@ -28,3 +28,15 @@ To set the email server to send invites, you will have to set those environment 
 | BAIKAL_SMTP_USER     | SMTP user                          |
 | BAIKAL_SMTP_PASS     | SMTP password                      |
 | BAIKAL_SMTP_STARTTLS | Enable STARTTLS (`on` or `off`)    |
+
+## Reverse proxy
+
+If using a reverse proxy, you should add a redirection from `.well-known/carddav` and `.well-known/carddav` to `/dav.php` in order for devices such as iOS to correctly connect when adding your server.
+
+### Nginx
+
+```nginx
+location ~ /.well-known/(carddav|caldav) {
+  return 302 /dav.php;
+}
+```
